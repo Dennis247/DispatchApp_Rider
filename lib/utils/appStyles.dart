@@ -1,6 +1,6 @@
-import 'package:dispatch_app_client/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'constants.dart';
 
 class AppTextStyles {
   static final labelTextStyle = GoogleFonts.poppins(
@@ -57,6 +57,11 @@ class AppTextStyles {
 
   static final appDarkHeaderTextStyle = GoogleFonts.poppins(
       fontSize: 18,
+      color: Constant.primaryColorDark,
+      fontWeight: FontWeight.w600);
+
+  static final dashBoardTextStyle = GoogleFonts.poppins(
+      fontSize: 30,
       color: Constant.primaryColorDark,
       fontWeight: FontWeight.w600);
 }
