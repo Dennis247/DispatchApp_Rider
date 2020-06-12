@@ -3,8 +3,6 @@ import 'package:dispatch_app_rider/ui/widgets/appDrawer.dart';
 import 'package:dispatch_app_rider/utils/appStyles.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   static final String routeName = "home-page";

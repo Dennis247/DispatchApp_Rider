@@ -1,6 +1,10 @@
+import 'package:dispatch_app_rider/provider/authProvider.dart';
+import 'package:dispatch_app_rider/provider/dispatchProvider.dart';
+import 'package:dispatch_app_rider/provider/notificatiomProvider.dart';
 import 'package:dispatch_app_rider/ui/pages/auth/loginPage.dart';
 import 'package:dispatch_app_rider/ui/pages/auth/signUpPage.dart';
 import 'package:dispatch_app_rider/ui/pages/home/homePage.dart';
+import 'package:dispatch_app_rider/ui/pages/onBoarding/OnBoardingPage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/myProfilePage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/settingsPage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/updatePasswordPage.dart';
@@ -22,26 +26,30 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: GoogleMapProvider()),
-          //  ChangeNotifierProvider.value(value: DispatchProvider()),
+          ChangeNotifierProvider.value(value: DispatchProvider()),
+          ChangeNotifierProvider.value(value: AUthProvider()),
+          ChangeNotifierProvider.value(value: NotificationProvider())
         ],
         child: MaterialApp(
-            title: 'Dispatch App Rider',
-            theme: ThemeData(
-                primaryColor: Constant.primaryColorDark,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-                pageTransitionsTheme: PageTransitionsTheme(builders: {
-                  TargetPlatform.iOS: CustomPageTransitionBuilder(),
-                  TargetPlatform.android: CustomPageTransitionBuilder(),
-                })),
-            home: LoginPage(),
-            routes: {
-              HomePage.routeName: (context) => HomePage(),
-              LoginPage.routeName: (context) => LoginPage(),
-              SignUpPage.routeName: (context) => SignUpPage(),
-              SettingsPage.routeName: (context) => SettingsPage(),
-              UpdatePassowrd.routeName: (context) => UpdatePassowrd(),
-              SupportPage.routeName: (context) => SupportPage(),
-              MyProfilePage.routeName: (context) => MyProfilePage()
-            }));
+          title: 'Dispatch App Rider',
+          theme: ThemeData(
+              primaryColor: Constant.primaryColorDark,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              pageTransitionsTheme: PageTransitionsTheme(builders: {
+                TargetPlatform.iOS: CustomPageTransitionBuilder(),
+                TargetPlatform.android: CustomPageTransitionBuilder(),
+              })),
+          home: OnBoardingPage(),
+          routes: {
+            LoginPage.routeName: (context) => LoginPage(),
+            SignUpPage.routeName: (context) => SignUpPage(),
+            HomePage.routeName: (context) => HomePage(),
+            SupportPage.routeName: (context) => SupportPage(),
+            SettingsPage.routeName: (context) => SettingsPage(),
+            MyProfilePage.routeName: (context) => MyProfilePage(),
+            UpdatePassowrd.routeName: (context) => UpdatePassowrd(),
+            OnBoardingPage.routeName: (context) => OnBoardingPage()
+          },
+        ));
   }
 }
