@@ -40,12 +40,12 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       //do firebase sign up
       final Rider user = new Rider(
-        null,
-        _fullNameController.text.trim(),
-        _phoneNumberController.text.trim(),
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
+          null,
+          _fullNameController.text.trim(),
+          _phoneNumberController.text.trim(),
+          _emailController.text.trim(),
+          _passwordController.text.trim(),
+          false);
       final response =
           await Provider.of<AUthProvider>(context, listen: false).signUp(user);
       if (response.isSUcessfull) {

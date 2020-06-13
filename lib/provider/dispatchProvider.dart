@@ -15,10 +15,10 @@ Dispatch currentDispatch;
 List<Dispatch> dispatchList;
 String recieverPhone;
 String recieverName;
+final dispatchRef = FirebaseDatabase.instance.reference().child('dispatch');
 
 class DispatchProvider with ChangeNotifier {
   Uuid uuid = Uuid();
-  final dispatchRef = FirebaseDatabase.instance.reference().child('dispatch');
 
   Future<ResponseModel> getDispatchList() async {
     dispatchList = dispatchList == null ? [] : dispatchList;
@@ -53,14 +53,42 @@ class DispatchProvider with ChangeNotifier {
           alldispatch.add(dispatch);
         });
       });
-      dispatchList = alldispatch;
+      dispatchList = alldispatch.reversed.toList();
       return ResponseModel(true, "Disatch list gotten sucessfully");
     } catch (e) {
       return ResponseModel(false, e.toString());
     }
   }
 
-  List<Dispatch> getDispatchLIst(String dispatchStatus, List<Dispatch> list) {
+  List<Dispatch> getStreamDIspatchList(DataSnapshot dataSnapshot) {
+    List<Dispatch> alldispatch = [];
+    Map<dynamic, dynamic> dbDispatchLIst = dataSnapshot.value;
+    dbDispatchLIst.forEach((key, value) {
+      final dispatch = Dispatch(
+          id: value['id'],
+          userId: value['userId'],
+          trackingNo: value['trackingNo'],
+          dispatchRiderId: value['dispatchRiderId'],
+          dispatchDate: DateTime.parse(value['dispatchDate']),
+          pickUpLocation: value['pickUpLocation'],
+          dispatchDestination: value['dispatchDestination'],
+          dispatchBaseFare: double.parse(value['dispatchBaseFare'].toString()),
+          dispatchTotalFare:
+              double.parse(value['dispatchTotalFare'].toString()),
+          dispatchType: value['dispatchType'],
+          dispatchStatus: value['dispatchStatus'],
+          currentLocation: value['currentLocation'],
+          estimatedDIspatchDuration: value['estimatedDIspatchDuration'],
+          estimatedDistance: value['estimatedDistance'],
+          dispatchReciever: value['dispatchReciever'],
+          dispatchRecieverPhone: value['dispatchRecieverPhone']);
+      alldispatch.add(dispatch);
+    });
+    return alldispatch.reversed.toList();
+  }
+
+  List<Dispatch> getDispatchLIst(String dispatchStatus, List<Dispatch> list,
+      {String riderId}) {
     var dispatchReturn = [];
     if (dispatchStatus == Constant.dispatchPendingStatus) {
       dispatchReturn = list
@@ -70,79 +98,29 @@ class DispatchProvider with ChangeNotifier {
     }
     if (dispatchStatus == Constant.dispatchActiveStatus) {
       dispatchReturn = list
-          .where((ds) => ds.dispatchStatus == Constant.dispatchActiveStatus)
+          .where((ds) =>
+              ds.dispatchStatus == Constant.dispatchActiveStatus &&
+              ds.dispatchRiderId == riderId)
           .toList();
       return dispatchReturn;
     }
     if (dispatchStatus == Constant.dispatchCompletedStatus) {
       dispatchReturn = list
-          .where((ds) => ds.dispatchStatus == Constant.dispatchCompletedStatus)
+          .where((ds) =>
+              ds.dispatchStatus == Constant.dispatchCompletedStatus &&
+              ds.dispatchRiderId == riderId)
           .toList();
       return dispatchReturn;
     }
     if (dispatchStatus == Constant.dispatchCancelledStatus) {
       dispatchReturn = list
-          .where((ds) => ds.dispatchStatus == Constant.dispatchCancelledStatus)
+          .where((ds) =>
+              ds.dispatchStatus == Constant.dispatchCancelledStatus &&
+              ds.dispatchRiderId == riderId)
           .toList();
       return dispatchReturn;
     }
     return dispatchReturn;
-  }
-
-  Future<ResponseModel> addDispatch(Dispatch dispatch) async {
-    try {
-      await dispatchRef.child(dispatch.id).set({
-        "id": dispatch.id,
-        "userId": dispatch.userId,
-        "trackingNo": dispatch.trackingNo,
-        "dispatchRiderId": dispatch.dispatchRiderId,
-        "dispatchDate": DateTime.now().toIso8601String(),
-        "pickUpLocation": dispatch.pickUpLocation,
-        "dispatchDestination": dispatch.dispatchDestination,
-        "dispatchBaseFare": dispatch.dispatchBaseFare,
-        "dispatchType": dispatch.dispatchType,
-        "dispatchStatus": dispatch.dispatchStatus,
-        "currentLocation": dispatch.currentLocation,
-        "estimatedDIspatchDuration": dispatch.estimatedDIspatchDuration,
-        "estimatedDistance": dispatch.estimatedDistance,
-        "dispatchTotalFare": dispatch.dispatchTotalFare,
-        "dispatchReciever": dispatch.dispatchReciever,
-        "dispatchRecieverPhone": dispatch.dispatchRecieverPhone
-      });
-      dispatchList.add(dispatch);
-      return ResponseModel(true, "Dispatch Created Sucessfully");
-    } catch (e) {
-      return ResponseModel(true, e.toString());
-    }
-  }
-
-  Future<ResponseModel> createDispatch(String dispatchType,
-      String pickUpLocation, String dispatchDestination, String token) async {
-    try {
-      final placeDistanceTime = await getPlaceDistanceTimeWithAddress(
-          pickUpLocation, dispatchDestination, token);
-      final Dispatch dispatch = new Dispatch(
-          id: uuid.v4(),
-          userId: loggedInRider.id,
-          trackingNo: "DISP001",
-          dispatchRiderId: uuid.v4(),
-          dispatchDate: DateTime.now(),
-          pickUpLocation: pickUpLocation,
-          dispatchDestination: dispatchDestination,
-          dispatchBaseFare: Constant.dispatchBaseFare,
-          dispatchType: dispatchType,
-          dispatchStatus: Constant.dispatchPendingStatus,
-          currentLocation: "",
-          estimatedDIspatchDuration: placeDistanceTime.duration,
-          estimatedDistance: placeDistanceTime.distance,
-          dispatchTotalFare: 5000,
-          dispatchReciever: recieverName,
-          dispatchRecieverPhone: recieverPhone);
-      currentDispatch = dispatch;
-      return ResponseModel(true, "dispatch created sucessfully");
-    } catch (e) {
-      return ResponseModel(true, e.toString());
-    }
   }
 
   Future<PlaceDistanceTime> getPlaceDistanceTimeWithAddress(
@@ -175,6 +153,19 @@ class DispatchProvider with ChangeNotifier {
       String dispatchId, String status) async {
     try {
       dispatchRef.child(dispatchId).update({'dispatchStatus': status});
+      return ResponseModel(true, "Dispatch Staus Updated Sucessfully");
+    } catch (e) {
+      return ResponseModel(false, e.toString());
+    }
+  }
+
+  Future<ResponseModel> assignDispatchToRider(
+      String dispatchId, String riderId) async {
+    try {
+      dispatchRef.child(dispatchId).update({
+        'dispatchStatus': Constant.dispatchActiveStatus,
+        "dispatchRiderId": riderId
+      });
       return ResponseModel(true, "Dispatch Staus Updated Sucessfully");
     } catch (e) {
       return ResponseModel(false, e.toString());

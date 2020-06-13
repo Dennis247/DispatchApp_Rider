@@ -1,14 +1,19 @@
+import 'package:dispatch_app_rider/provider/authProvider.dart';
+import 'package:dispatch_app_rider/ui/pages/auth/loginPage.dart';
+import 'package:dispatch_app_rider/ui/pages/home/homePage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/settingsPage.dart';
 import 'package:dispatch_app_rider/ui/pages/support/supportPage.dart';
 import 'package:dispatch_app_rider/utils/appStyles.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AUthProvider>(context, listen: false);
     return Drawer(
       child: ListView(
         children: <Widget>[
@@ -24,7 +29,7 @@ class AppDrawer extends StatelessWidget {
                 style: AppTextStyles.smallprimaryColorTextStyle,
               ),
               subtitle: Text(
-                "Osagiede Dennis",
+                loggedInRider.fullName,
                 style: AppTextStyles.appDarkHeaderTextStyle,
               ),
             ),
@@ -39,9 +44,10 @@ class AppDrawer extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pop();
+                    Navigator.of(context).pushNamed(HomePage.routeName);
                   },
                   child: Text(
-                    "Dispatch History",
+                    "Dispatch Board",
                     style: AppTextStyles.appDarkHeaderTextStyle,
                   ),
                 ),
@@ -51,8 +57,8 @@ class AppDrawer extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Share.share(
-                      "https://github.com/Dennis247/green_taxi",
-                      subject: "Invite Your Friend To Green Taxi",
+                      "https://github.com/Dennis247/DispatchApp_Rider",
+                      subject: "Invite Your Friend To Dispatch App Rider",
                     );
                   },
                   child: Text(
@@ -65,6 +71,7 @@ class AppDrawer extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
+                    Navigator.of(context).pop();
                     Navigator.of(context).pushNamed(SettingsPage.routeName);
                   },
                   child: Text(
@@ -77,6 +84,7 @@ class AppDrawer extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
+                    Navigator.of(context).pop();
                     Navigator.of(context).pushNamed(SupportPage.routeName);
                   },
                   child: Text(
@@ -89,7 +97,9 @@ class AppDrawer extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushReplacementNamed('/');
+                    Navigator.of(context)
+                        .pushReplacementNamed(LoginPage.routeName);
+                    authProvider.logOut();
                   },
                   child: Text("Log Out",
                       style: AppTextStyles.appDarkHeaderTextStyle),

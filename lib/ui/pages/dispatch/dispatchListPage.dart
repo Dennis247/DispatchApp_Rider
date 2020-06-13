@@ -1,13 +1,17 @@
+import 'package:dispatch_app_rider/model/dispatch.dart';
 import 'package:dispatch_app_rider/ui/widgets/DispatchListWidget.dart';
 import 'package:dispatch_app_rider/utils/appStyles.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DispatchList extends StatefulWidget {
   final String dispatchType;
+  final List<Dispatch> dispatchList;
   static final String routeName = "dispatch-list";
 
-  const DispatchList({Key key, this.dispatchType}) : super(key: key);
+  const DispatchList({Key key, this.dispatchType, this.dispatchList})
+      : super(key: key);
   @override
   _DispatchListState createState() => _DispatchListState();
 }
@@ -19,7 +23,7 @@ class _DispatchListState extends State<DispatchList> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.dispatchType,
+          widget.dispatchType.toUpperCase(),
           style: AppTextStyles.appLightHeaderTextStyle,
         ),
         centerTitle: true,
@@ -37,10 +41,32 @@ class _DispatchListState extends State<DispatchList> {
         width: appSize.width,
         child: Padding(
           padding: const EdgeInsets.only(bottom: 15),
-          child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) => DispatchListWidget()),
+          child: widget.dispatchList.length > 0
+              ? ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: widget.dispatchList.length,
+                  itemBuilder: (context, index) {
+                    return DispatchListWidget(
+                        dispatch: widget.dispatchList[index]);
+                  })
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        FontAwesomeIcons.opencart,
+                        size: 100,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "dispatch list is empty",
+                        style: AppTextStyles.appTextStyle,
+                      )
+                    ],
+                  ),
+                ),
         ),
       ),
     );

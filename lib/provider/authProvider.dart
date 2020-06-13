@@ -20,12 +20,12 @@ class AUthProvider with ChangeNotifier {
           email: email, password: password);
       final dataSnapShot = await riderRef.child(authResult.user.uid).once();
       loggedInRider = Rider(
-        dataSnapShot.value['id'],
-        dataSnapShot.value['fullname'],
-        dataSnapShot.value['phoneNumber'],
-        dataSnapShot.value['email'],
-        password,
-      );
+          dataSnapShot.value['id'],
+          dataSnapShot.value['fullname'],
+          dataSnapShot.value['phoneNumber'],
+          dataSnapShot.value['email'],
+          password,
+          dataSnapShot.value['hasActiveDispatch']);
       storeAutoData(loggedInRider);
       storeAppOnBoardingData(loggedInRider.id);
       return ResponseModel(true, "Rider SignIn Sucessfull");
@@ -45,10 +45,8 @@ class AUthProvider with ChangeNotifier {
         "phoneNumber": rider.phoneNumber,
       });
       loggedInRider = new Rider(authResult.user.uid, rider.fullName,
-          rider.fullName, rider.email, rider.password);
-      final autoLoggedRider = Rider(authResult.user.uid, rider.email,
-          rider.fullName, rider.phoneNumber, rider.password);
-      storeAutoData(autoLoggedRider);
+          rider.phoneNumber, rider.email, rider.password, false);
+      storeAutoData(loggedInRider);
       storeAppOnBoardingData(loggedInRider.id);
       return ResponseModel(true, "Rider SignUp Sucessfull");
     } catch (e) {
@@ -73,8 +71,13 @@ class AUthProvider with ChangeNotifier {
       riderRef
           .child(loggedInRider.id)
           .update({'fullname': fullname, 'phoneNumber': phoneNumber});
-      loggedInRider = Rider(loggedInRider.id, fullname, phoneNumber,
-          loggedInRider.email, loggedInRider.password);
+      loggedInRider = Rider(
+          loggedInRider.id,
+          fullname,
+          phoneNumber,
+          loggedInRider.email,
+          loggedInRider.password,
+          loggedInRider.hasActiveDispatch);
       return ResponseModel(true, "Rider Profile Updated Sucessfully");
     } catch (e) {
       return ResponseModel(false, e.toString());
@@ -98,7 +101,8 @@ class AUthProvider with ChangeNotifier {
       'fullName': rider.fullName,
       'password': rider.password,
       'email': rider.email,
-      'phoneNumber': rider.phoneNumber
+      'phoneNumber': rider.phoneNumber,
+      'hasActiveDispatch': rider.hasActiveDispatch
     });
     sharedPrefs.setString(Constant.autoLogOnData, logOnData);
   }
@@ -124,12 +128,12 @@ class AUthProvider with ChangeNotifier {
     final sharedData = sharedPref.getString(Constant.autoLogOnData);
     final logOnData = json.decode(sharedData) as Map<String, Object>;
     loggedInRider = new Rider(
-      logOnData['id'],
-      logOnData['fullName'],
-      logOnData['phoneNumber'],
-      logOnData['email'],
-      logOnData['password'],
-    );
+        logOnData['id'],
+        logOnData['fullName'],
+        logOnData['phoneNumber'],
+        logOnData['email'],
+        logOnData['password'],
+        logOnData['hasActiveDispatch']);
     isLoggedIn = true;
     return true;
   }

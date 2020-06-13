@@ -1,3 +1,4 @@
+import 'package:dispatch_app_rider/model/dispatch.dart';
 import 'package:dispatch_app_rider/ui/pages/dispatch/dispatchDetails.dart';
 import 'package:dispatch_app_rider/utils/appStyles.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';
@@ -6,6 +7,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class DispatchListWidget extends StatelessWidget {
+  final Dispatch dispatch;
+  const DispatchListWidget({Key key, this.dispatch}) : super(key: key);
+
   _buildRideInfo(
     String point,
     String title,
@@ -68,8 +72,10 @@ class DispatchListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DispatchDetails()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => DispatchDetails(
+                  dispatch: dispatch,
+                )));
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 5),
@@ -87,7 +93,7 @@ class DispatchListWidget extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, top: 20.0),
                       child: _buildRideInfo(Constant.pickUp,
-                          Constant.dispatchPickIpAddress, Colors.green),
+                          dispatch.pickUpLocation, Colors.green),
                     ),
                     SizedBox(
                       height: 5,
@@ -95,7 +101,7 @@ class DispatchListWidget extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.only(left: 20, top: 5),
                         child: _buildRideInfo(Constant.deliveryAddress,
-                            Constant.dispatchDestinationAddress, Colors.red)),
+                            dispatch.dispatchDestination, Colors.red)),
                     SizedBox(
                       height: 5,
                     ),
@@ -108,11 +114,13 @@ class DispatchListWidget extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        _buildBottomInfo(Icons.phone, "08167828256",
+                        _buildBottomInfo(
+                            Icons.phone,
+                            dispatch.dispatchRecieverPhone,
                             Constant.primaryColorDark),
                         _buildBottomInfo(
                             FontAwesomeIcons.clock,
-                            timeago.format(DateTime.now()),
+                            timeago.format(dispatch.dispatchDate),
                             Constant.primaryColorDark)
                       ],
                     ),

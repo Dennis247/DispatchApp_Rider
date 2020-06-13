@@ -4,14 +4,10 @@ class Rider {
   final String phoneNumber;
   final String email;
   final String password;
+  final bool hasActiveDispatch;
 
-  Rider(
-    this.id,
-    this.fullName,
-    this.phoneNumber,
-    this.email,
-    this.password,
-  );
+  Rider(this.id, this.fullName, this.phoneNumber, this.email, this.password,
+      this.hasActiveDispatch);
 
   static List<Rider> ridertListFromJson(List collection) {
     List<Rider> riderlist =
@@ -24,5 +20,6 @@ class Rider {
         fullName = json['fullName'],
         phoneNumber = json['phoneNumber'],
         email = json['email'],
+        hasActiveDispatch = json['hasActiveDispatch'],
         password = '*************';
 }
