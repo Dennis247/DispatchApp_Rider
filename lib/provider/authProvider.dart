@@ -14,6 +14,7 @@ class AUthProvider with ChangeNotifier {
   final riderRef = FirebaseDatabase.instance.reference().child('riders');
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   bool isLoggedIn = false;
+  bool hasOnboarded = false;
   Future<ResponseModel> login(String email, String password) async {
     try {
       final authResult = await firebaseAuth.signInWithEmailAndPassword(
@@ -28,6 +29,8 @@ class AUthProvider with ChangeNotifier {
           dataSnapShot.value['hasActiveDispatch']);
       storeAutoData(loggedInRider);
       storeAppOnBoardingData(loggedInRider.id);
+      isLoggedIn = true;
+      notifyListeners();
       return ResponseModel(true, "Rider SignIn Sucessfull");
     } catch (e) {
       return ResponseModel(false, e.toString());
@@ -121,6 +124,7 @@ class AUthProvider with ChangeNotifier {
   }
 
   Future<bool> tryAutoLogin() async {
+    checkUserOnBoarding();
     final sharedPref = await SharedPreferences.getInstance();
     if (!sharedPref.containsKey(Constant.autoLogOnData)) {
       return false;
@@ -135,15 +139,18 @@ class AUthProvider with ChangeNotifier {
         logOnData['password'],
         logOnData['hasActiveDispatch']);
     isLoggedIn = true;
+    notifyListeners();
     return true;
   }
 
-  Future<bool> isRiderOnBoarded() async {
+  checkUserOnBoarding() async {
     final sharedPref = await SharedPreferences.getInstance();
     if (!sharedPref.containsKey(Constant.onBoardingData)) {
-      return false;
+      hasOnboarded = false;
+    } else {
+      hasOnboarded = true;
     }
 
-    return true;
+    // return true;
   }
 }

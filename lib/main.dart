@@ -10,13 +10,20 @@ import 'package:dispatch_app_rider/ui/pages/settings/myProfilePage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/settingsPage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/updatePasswordPage.dart';
 import 'package:dispatch_app_rider/ui/pages/support/supportPage.dart';
+import 'package:dispatch_app_rider/ui/widgets/splashWidget.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:workmanager/workmanager.dart';
+import 'model/notification.dart';
 import 'provider/googleMpaProvider.dart';
 import 'utils/customRoute.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-void main() {
+Future<void> main() async {
   runApp(MyApp());
 }
 
@@ -31,26 +38,43 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: AUthProvider()),
           ChangeNotifierProvider.value(value: NotificationProvider())
         ],
-        child: MaterialApp(
-          title: 'Dispatch App Rider',
-          theme: ThemeData(
-              primaryColor: Constant.primaryColorDark,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              pageTransitionsTheme: PageTransitionsTheme(builders: {
-                TargetPlatform.iOS: CustomPageTransitionBuilder(),
-                TargetPlatform.android: CustomPageTransitionBuilder(),
-              })),
-          home: OnBoardingPage(),
-          routes: {
-            LoginPage.routeName: (context) => LoginPage(),
-            SignUpPage.routeName: (context) => SignUpPage(),
-            HomePage.routeName: (context) => HomePage(),
-            SupportPage.routeName: (context) => SupportPage(),
-            SettingsPage.routeName: (context) => SettingsPage(),
-            MyProfilePage.routeName: (context) => MyProfilePage(),
-            UpdatePassowrd.routeName: (context) => UpdatePassowrd(),
-            OnBoardingPage.routeName: (context) => OnBoardingPage(),
-            NotificationPage.routeName: (context) => NotificationPage()
+        child: Consumer<AUthProvider>(
+          builder: (context, authData, _) {
+            return MaterialApp(
+              title: 'Dispatch App Rider',
+              theme: ThemeData(
+                  primaryColor: Constant.primaryColorDark,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                  pageTransitionsTheme: PageTransitionsTheme(builders: {
+                    TargetPlatform.iOS: CustomPageTransitionBuilder(),
+                    TargetPlatform.android: CustomPageTransitionBuilder(),
+                  })),
+              home: authData.isLoggedIn
+                  ? HomePage()
+                  : FutureBuilder(
+                      future: authData.tryAutoLogin(),
+                      builder: (context, authDataResultSnapSHot) =>
+                          authDataResultSnapSHot.connectionState ==
+                                  ConnectionState.waiting
+                              ? Center(
+                                  child: SplashWidget(),
+                                )
+                              : authData.hasOnboarded
+                                  ? LoginPage()
+                                  : OnBoardingPage(),
+                    ),
+              routes: {
+                LoginPage.routeName: (context) => LoginPage(),
+                SignUpPage.routeName: (context) => SignUpPage(),
+                HomePage.routeName: (context) => HomePage(),
+                SupportPage.routeName: (context) => SupportPage(),
+                SettingsPage.routeName: (context) => SettingsPage(),
+                MyProfilePage.routeName: (context) => MyProfilePage(),
+                UpdatePassowrd.routeName: (context) => UpdatePassowrd(),
+                OnBoardingPage.routeName: (context) => OnBoardingPage(),
+                NotificationPage.routeName: (context) => NotificationPage()
+              },
+            );
           },
         ));
   }

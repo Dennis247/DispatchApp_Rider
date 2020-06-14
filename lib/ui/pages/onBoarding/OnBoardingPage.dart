@@ -17,16 +17,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   void initState() {
-    _checkOnBoarding();
     super.initState();
-  }
-
-  void _checkOnBoarding() async {
-    bool isOnBoarded = await Provider.of<AUthProvider>(context, listen: false)
-        .isRiderOnBoarded();
-    if (isOnBoarded) {
-      Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-    }
   }
 
   void _onIntroEnd(context) {
