@@ -4,6 +4,7 @@ import 'package:dispatch_app_rider/provider/notificatiomProvider.dart';
 import 'package:dispatch_app_rider/ui/pages/auth/loginPage.dart';
 import 'package:dispatch_app_rider/ui/pages/auth/signUpPage.dart';
 import 'package:dispatch_app_rider/ui/pages/home/homePage.dart';
+import 'package:dispatch_app_rider/ui/pages/notification/notificationPage.dart';
 import 'package:dispatch_app_rider/ui/pages/onBoarding/OnBoardingPage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/myProfilePage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/settingsPage.dart';
@@ -48,7 +49,8 @@ class MyApp extends StatelessWidget {
             SettingsPage.routeName: (context) => SettingsPage(),
             MyProfilePage.routeName: (context) => MyProfilePage(),
             UpdatePassowrd.routeName: (context) => UpdatePassowrd(),
-            OnBoardingPage.routeName: (context) => OnBoardingPage()
+            OnBoardingPage.routeName: (context) => OnBoardingPage(),
+            NotificationPage.routeName: (context) => NotificationPage()
           },
         ));
   }

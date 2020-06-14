@@ -1,6 +1,7 @@
 import 'package:dispatch_app_rider/provider/authProvider.dart';
 import 'package:dispatch_app_rider/ui/pages/auth/loginPage.dart';
 import 'package:dispatch_app_rider/ui/pages/home/homePage.dart';
+import 'package:dispatch_app_rider/ui/pages/notification/notificationPage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/settingsPage.dart';
 import 'package:dispatch_app_rider/ui/pages/support/supportPage.dart';
 import 'package:dispatch_app_rider/utils/appStyles.dart';
@@ -52,7 +53,33 @@ class AppDrawer extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushNamed(NotificationPage.routeName);
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        "Notifications",
+                        style: AppTextStyles.appDarkHeaderTextStyle,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Chip(
+                          backgroundColor: Colors.green,
+                          label: Text(
+                            "2",
+                            style: AppTextStyles.appboldWhiteTextStyle,
+                          ))
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 GestureDetector(
                   onTap: () {

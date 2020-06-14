@@ -1,6 +1,7 @@
 import 'package:dispatch_app_rider/model/dispatch.dart';
 import 'package:dispatch_app_rider/provider/authProvider.dart';
 import 'package:dispatch_app_rider/provider/dispatchProvider.dart';
+import 'package:dispatch_app_rider/provider/notificatiomProvider.dart';
 import 'package:dispatch_app_rider/ui/pages/dispatch/dispatchListPage.dart';
 import 'package:dispatch_app_rider/ui/widgets/appDrawer.dart';
 import 'package:dispatch_app_rider/utils/appStyles.dart';
@@ -11,7 +12,6 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   static final String routeName = "home-page";
-
   _buildStatusWidget(String subject, int count, Color color,
       BuildContext context, Function function) {
     return Card(

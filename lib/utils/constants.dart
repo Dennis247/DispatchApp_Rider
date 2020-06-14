@@ -159,4 +159,8 @@ class Constant {
   static final String hiveData = "hive data";
   static final String userTypeUser = "user";
   static final String userTypeDriver = "driver";
+  static final String pendingDispatchMessage = "Pick up is wwaiting at ";
+  static final String completedDispatchMessage = "Dispatch Completed for  ";
+  static final String pendingDispatchNotification = "pending dispatch";
+  static final String completedDispatchNotification = "completed dispatch";
 }

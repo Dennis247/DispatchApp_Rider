@@ -34,8 +34,6 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     Provider.of<NotificationProvider>(context, listen: false)
         .initialisePushNotification();
-
-    //check onBoardingData
     _tryAutoLogin();
     super.initState();
   }
