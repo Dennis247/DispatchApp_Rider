@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:dispatch_app_rider/model/placeDetail.dart';
 import 'package:dispatch_app_rider/provider/googleMpaProvider.dart';
 import 'package:dispatch_app_rider/ui/widgets/appDrawer.dart';
 import 'package:dispatch_app_rider/utils/appStyles.dart';
@@ -7,11 +6,10 @@ import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:dispatch_app_rider/src/lib_export.dart';
 
 class DispatchLocation extends StatefulWidget {
   static final routeName = "dispatch-location";

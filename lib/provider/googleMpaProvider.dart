@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'package:dispatch_app_rider/model/placeDetail.dart';
+import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class GoogleMapProvider with ChangeNotifier {

@@ -1,12 +1,11 @@
 import 'dart:convert';
-
-import 'package:dispatch_app_rider/model/response.dart';
-import 'package:dispatch_app_rider/model/rider.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dispatch_app_rider/src/lib_export.dart';
 
 Rider loggedInRider;
 
@@ -26,7 +25,8 @@ class AUthProvider with ChangeNotifier {
           dataSnapShot.value['phoneNumber'],
           dataSnapShot.value['email'],
           password,
-          dataSnapShot.value['hasActiveDispatch']);
+          dataSnapShot.value['hasActiveDispatch'],
+          dataSnapShot.value['token']);
       storeAutoData(loggedInRider);
       storeAppOnBoardingData(loggedInRider.id);
       isLoggedIn = true;
@@ -41,14 +41,17 @@ class AUthProvider with ChangeNotifier {
     try {
       final authResult = await firebaseAuth.createUserWithEmailAndPassword(
           email: rider.email, password: rider.password);
+      FirebaseMessaging messaging = FirebaseMessaging();
+      final token = await messaging.getToken();
       await riderRef.child(authResult.user.uid).set({
         "id": authResult.user.uid,
         "email": rider.email,
         "fullname": rider.fullName,
         "phoneNumber": rider.phoneNumber,
+        "token": token
       });
       loggedInRider = new Rider(authResult.user.uid, rider.fullName,
-          rider.phoneNumber, rider.email, rider.password, false);
+          rider.phoneNumber, rider.email, rider.password, false, token);
       storeAutoData(loggedInRider);
       storeAppOnBoardingData(loggedInRider.id);
       return ResponseModel(true, "Rider SignUp Sucessfull");
@@ -80,7 +83,8 @@ class AUthProvider with ChangeNotifier {
           phoneNumber,
           loggedInRider.email,
           loggedInRider.password,
-          loggedInRider.hasActiveDispatch);
+          loggedInRider.hasActiveDispatch,
+          loggedInRider.token);
       return ResponseModel(true, "Rider Profile Updated Sucessfully");
     } catch (e) {
       return ResponseModel(false, e.toString());
@@ -105,7 +109,8 @@ class AUthProvider with ChangeNotifier {
       'password': rider.password,
       'email': rider.email,
       'phoneNumber': rider.phoneNumber,
-      'hasActiveDispatch': rider.hasActiveDispatch
+      'hasActiveDispatch': rider.hasActiveDispatch,
+      'token': rider.token
     });
     sharedPrefs.setString(Constant.autoLogOnData, logOnData);
   }
@@ -131,13 +136,16 @@ class AUthProvider with ChangeNotifier {
     }
     final sharedData = sharedPref.getString(Constant.autoLogOnData);
     final logOnData = json.decode(sharedData) as Map<String, Object>;
+    FirebaseMessaging messaging = FirebaseMessaging();
+    final token = await messaging.getToken();
     loggedInRider = new Rider(
         logOnData['id'],
         logOnData['fullName'],
         logOnData['phoneNumber'],
         logOnData['email'],
         logOnData['password'],
-        logOnData['hasActiveDispatch']);
+        logOnData['hasActiveDispatch'],
+        token);
     isLoggedIn = true;
     notifyListeners();
     return true;

@@ -9,7 +9,8 @@ import 'package:dispatch_app_rider/ui/widgets/appTextWidget.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
+
+import 'package:dispatch_app_rider/src/lib_export.dart';
 
 class LoginPage extends StatefulWidget {
   static final String routeName = "loginPage";
@@ -32,8 +33,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    Provider.of<NotificationProvider>(context, listen: false)
-        .initialisePushNotification();
     _tryAutoLogin();
     super.initState();
   }

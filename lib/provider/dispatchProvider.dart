@@ -1,13 +1,5 @@
-import 'dart:convert';
-import 'package:dispatch_app_rider/model/PlaceDistanceTime.dart';
-import 'package:dispatch_app_rider/model/dispatch.dart';
-import 'package:dispatch_app_rider/model/response.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
+import 'package:dispatch_app_rider/src/lib_export.dart';
 
 Dispatch currentDispatch;
 List<Dispatch> dispatchList;
@@ -47,7 +39,8 @@ class DispatchProvider with ChangeNotifier {
               estimatedDIspatchDuration: value['estimatedDIspatchDuration'],
               estimatedDistance: value['estimatedDistance'],
               dispatchReciever: value['dispatchReciever'],
-              dispatchRecieverPhone: value['dispatchRecieverPhone']);
+              dispatchRecieverPhone: value['dispatchRecieverPhone'],
+              dispatchDescription: value['dispatchDescription']);
           alldispatch.add(dispatch);
         });
       });
@@ -79,7 +72,8 @@ class DispatchProvider with ChangeNotifier {
           estimatedDIspatchDuration: value['estimatedDIspatchDuration'],
           estimatedDistance: value['estimatedDistance'],
           dispatchReciever: value['dispatchReciever'],
-          dispatchRecieverPhone: value['dispatchRecieverPhone']);
+          dispatchRecieverPhone: value['dispatchRecieverPhone'],
+          dispatchDescription: value['dispatchDescription']);
       alldispatch.add(dispatch);
     });
     return alldispatch.reversed.toList();
@@ -87,12 +81,12 @@ class DispatchProvider with ChangeNotifier {
 
   List<Dispatch> getDispatchLIst(String dispatchStatus, List<Dispatch> list,
       {String riderId}) {
-    var dispatchReturn = [];
+    List<Dispatch> dispatchReturn = [];
     if (dispatchStatus == Constant.dispatchPendingStatus) {
       dispatchReturn = list
           .where((ds) => ds.dispatchStatus == Constant.dispatchPendingStatus)
           .toList();
-      return dispatchReturn;
+      //  return dispatchReturn;
     }
     if (dispatchStatus == Constant.dispatchActiveStatus) {
       dispatchReturn = list
@@ -100,7 +94,7 @@ class DispatchProvider with ChangeNotifier {
               ds.dispatchStatus == Constant.dispatchActiveStatus &&
               ds.dispatchRiderId == riderId)
           .toList();
-      return dispatchReturn;
+      //  return dispatchReturn;
     }
     if (dispatchStatus == Constant.dispatchCompletedStatus) {
       dispatchReturn = list
@@ -108,7 +102,7 @@ class DispatchProvider with ChangeNotifier {
               ds.dispatchStatus == Constant.dispatchCompletedStatus &&
               ds.dispatchRiderId == riderId)
           .toList();
-      return dispatchReturn;
+      //  return dispatchReturn;
     }
     if (dispatchStatus == Constant.dispatchCancelledStatus) {
       dispatchReturn = list
@@ -116,9 +110,10 @@ class DispatchProvider with ChangeNotifier {
               ds.dispatchStatus == Constant.dispatchCancelledStatus &&
               ds.dispatchRiderId == riderId)
           .toList();
-      return dispatchReturn;
+      // return dispatchReturn;
     }
-    return dispatchReturn;
+    dispatchReturn.sort((a, b) => a.dispatchDate.compareTo(b.dispatchDate));
+    return dispatchReturn.reversed.toList();
   }
 
   Future<PlaceDistanceTime> getPlaceDistanceTimeWithAddress(

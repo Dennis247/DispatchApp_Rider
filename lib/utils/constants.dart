@@ -163,4 +163,7 @@ class Constant {
   static final String completedDispatchMessage = "Dispatch Completed for  ";
   static final String pendingDispatchNotification = "pending dispatch";
   static final String completedDispatchNotification = "completed dispatch";
+  static final String pickUpDispatchMessage =
+      "Dispatch Rider {{Rider}} is on it way for pick up";
+  static final String pickUpDispatchNotification = "Rider PickUp";
 }

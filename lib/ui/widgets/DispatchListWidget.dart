@@ -1,9 +1,10 @@
-import 'package:dispatch_app_rider/model/dispatch.dart';
-import 'package:dispatch_app_rider/ui/pages/dispatch/dispatchDetails.dart';
 import 'package:dispatch_app_rider/utils/appStyles.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';
-import 'package:flutter/material.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:dispatch_app_rider/src/lib_export.dart';
+
 import 'package:timeago/timeago.dart' as timeago;
 
 class DispatchListWidget extends StatelessWidget {

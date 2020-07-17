@@ -1,4 +1,4 @@
-import 'package:dispatch_app_rider/model/dispatch.dart';
+import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'package:dispatch_app_rider/ui/widgets/DispatchListWidget.dart';
 import 'package:dispatch_app_rider/utils/appStyles.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';

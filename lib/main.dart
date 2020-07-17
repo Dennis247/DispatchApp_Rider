@@ -12,16 +12,10 @@ import 'package:dispatch_app_rider/ui/pages/settings/updatePasswordPage.dart';
 import 'package:dispatch_app_rider/ui/pages/support/supportPage.dart';
 import 'package:dispatch_app_rider/ui/widgets/splashWidget.dart';
 import 'package:dispatch_app_rider/utils/constants.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
-import 'model/notification.dart';
 import 'provider/googleMpaProvider.dart';
 import 'utils/customRoute.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 Future<void> main() async {
   runApp(MyApp());

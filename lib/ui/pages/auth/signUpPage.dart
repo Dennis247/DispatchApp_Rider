@@ -1,4 +1,3 @@
-import 'package:dispatch_app_rider/model/rider.dart';
 import 'package:dispatch_app_rider/provider/authProvider.dart';
 import 'package:dispatch_app_rider/ui/pages/home/homePage.dart';
 import 'package:dispatch_app_rider/ui/widgets/appButtonWidget.dart';
@@ -8,7 +7,7 @@ import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-
+import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'loginPage.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -45,7 +44,8 @@ class _SignUpPageState extends State<SignUpPage> {
           _phoneNumberController.text.trim(),
           _emailController.text.trim(),
           _passwordController.text.trim(),
-          false);
+          false,
+          null);
       final response =
           await Provider.of<AUthProvider>(context, listen: false).signUp(user);
       if (response.isSUcessfull) {

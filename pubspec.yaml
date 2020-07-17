@@ -24,6 +24,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  dispatch_lib:
+    path: ../dispatch_lib
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -46,7 +49,7 @@ dependencies:
   shared_preferences: ^0.5.7+3
   introduction_screen: ^1.0.8
   firebase_database: ^3.1.6
-  workmanager: ^0.2.0
+  firebase_messaging:
   
 
 dev_dependencies:

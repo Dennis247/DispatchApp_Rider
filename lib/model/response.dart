@@ -1,6 +1,6 @@
-class ResponseModel {
-  final bool isSUcessfull;
-  final String responseMessage;
+// class ResponseModel {
+//   final bool isSUcessfull;
+//   final String responseMessage;
 
-  ResponseModel(this.isSUcessfull, this.responseMessage);
-}
+//   ResponseModel(this.isSUcessfull, this.responseMessage);
+// }
