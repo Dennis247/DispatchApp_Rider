@@ -1,6 +1,4 @@
-import 'package:dispatch_app_rider/provider/authProvider.dart';
-import 'package:dispatch_app_rider/provider/dispatchProvider.dart';
-import 'package:dispatch_app_rider/provider/notificatiomProvider.dart';
+import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'package:dispatch_app_rider/ui/pages/auth/loginPage.dart';
 import 'package:dispatch_app_rider/ui/pages/auth/signUpPage.dart';
 import 'package:dispatch_app_rider/ui/pages/home/homePage.dart';
@@ -10,12 +8,7 @@ import 'package:dispatch_app_rider/ui/pages/settings/myProfilePage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/settingsPage.dart';
 import 'package:dispatch_app_rider/ui/pages/settings/updatePasswordPage.dart';
 import 'package:dispatch_app_rider/ui/pages/support/supportPage.dart';
-import 'package:dispatch_app_rider/ui/widgets/splashWidget.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'provider/googleMpaProvider.dart';
-import 'utils/customRoute.dart';
 
 Future<void> main() async {
   runApp(MyApp());
@@ -37,7 +30,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               title: 'Dispatch App Rider',
               theme: ThemeData(
-                  primaryColor: Constant.primaryColorDark,
+                  primaryColor: Constants.primaryColorDark,
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                   pageTransitionsTheme: PageTransitionsTheme(builders: {
                     TargetPlatform.iOS: CustomPageTransitionBuilder(),
@@ -46,7 +39,7 @@ class MyApp extends StatelessWidget {
               home: authData.isLoggedIn
                   ? HomePage()
                   : FutureBuilder(
-                      future: authData.tryAutoLogin(),
+                      future: authData.tryRiderAutoLogin(),
                       builder: (context, authDataResultSnapSHot) =>
                           authDataResultSnapSHot.connectionState ==
                                   ConnectionState.waiting

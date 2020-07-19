@@ -1,7 +1,5 @@
 import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'package:dispatch_app_rider/ui/widgets/DispatchListWidget.dart';
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -19,7 +17,7 @@ class DispatchList extends StatefulWidget {
 class _DispatchListState extends State<DispatchList> {
   @override
   Widget build(BuildContext context) {
-    final appSize = Constant.getAppSize(context);
+    final appSize = GlobalWidgets.getAppSize(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(

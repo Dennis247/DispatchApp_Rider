@@ -1,12 +1,5 @@
-import 'package:dispatch_app_rider/provider/authProvider.dart';
 import 'package:dispatch_app_rider/ui/pages/home/homePage.dart';
-import 'package:dispatch_app_rider/ui/widgets/appButtonWidget.dart';
-import 'package:dispatch_app_rider/ui/widgets/appInputWidget.dart';
-import 'package:dispatch_app_rider/ui/widgets/appTextWidget.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'loginPage.dart';
 
@@ -46,24 +39,24 @@ class _SignUpPageState extends State<SignUpPage> {
           _passwordController.text.trim(),
           false,
           null);
-      final response =
-          await Provider.of<AUthProvider>(context, listen: false).signUp(user);
+      final response = await Provider.of<AUthProvider>(context, listen: false)
+          .signUpRider(user);
       if (response.isSUcessfull) {
         _startLoading(false);
         Navigator.of(context).pushReplacementNamed(HomePage.routeName);
       } else {
         _startLoading(false);
-        Constant.showFialureDialogue(response.responseMessage, context);
+        GlobalWidgets.showFialureDialogue(response.responseMessage, context);
       }
     } catch (e) {
       _startLoading(false);
-      Constant.showFialureDialogue(e.toString(), context);
+      GlobalWidgets.showFialureDialogue(e.toString(), context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final appSzie = Constant.getAppSize(context);
+    final appSzie = GlobalWidgets.getAppSize(context);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -93,7 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     obscureText: false,
                     controller: _fullNameController,
                     validator: (value) {
-                      return Constant.stringValidator(value, "full name");
+                      return Constants.stringValidator(value, "full name");
                     },
                   ),
                 ),
@@ -106,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       obscureText: false,
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                        return Constant.stringValidator(value, "phone number");
+                        return Constants.stringValidator(value, "phone number");
                       },
                     )),
                 Padding(
@@ -117,7 +110,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       prefixIcon: FontAwesomeIcons.envelope,
                       obscureText: false,
                       validator: (value) {
-                        return Constant.stringValidator(value, "email");
+                        return Constants.stringValidator(value, "email");
                       },
                     )),
                 Padding(
@@ -128,14 +121,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       prefixIcon: FontAwesomeIcons.lock,
                       obscureText: true,
                       validator: (value) {
-                        return Constant.stringValidator(value, "full name");
+                        return Constants.stringValidator(value, "full name");
                       },
                     )),
                 SizedBox(
                   height: appSzie.height * 0.04,
                 ),
                 _isLoading
-                    ? Constant.circularInidcator()
+                    ? GlobalWidgets.circularInidcator()
                     : AppButtonWudget(
                         buttonText: "Sign Up",
                         function: () {

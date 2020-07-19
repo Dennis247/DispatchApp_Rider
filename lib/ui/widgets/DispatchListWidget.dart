@@ -1,10 +1,6 @@
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
-
+import 'package:dispatch_app_rider/ui/pages/dispatch/dispatchDetails.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:dispatch_app_rider/src/lib_export.dart';
-
 import 'package:timeago/timeago.dart' as timeago;
 
 class DispatchListWidget extends StatelessWidget {
@@ -81,7 +77,7 @@ class DispatchListWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 5),
         child: Card(
-          shadowColor: Constant.primaryColorDark,
+          shadowColor: Constants.primaryColorDark,
           elevation: 2,
           child: Container(
             child: Column(
@@ -93,7 +89,7 @@ class DispatchListWidget extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, top: 20.0),
-                      child: _buildRideInfo(Constant.pickUp,
+                      child: _buildRideInfo(Constants.pickUp,
                           dispatch.pickUpLocation, Colors.green),
                     ),
                     SizedBox(
@@ -101,7 +97,7 @@ class DispatchListWidget extends StatelessWidget {
                     ),
                     Padding(
                         padding: const EdgeInsets.only(left: 20, top: 5),
-                        child: _buildRideInfo(Constant.deliveryAddress,
+                        child: _buildRideInfo(Constants.deliveryAddress,
                             dispatch.dispatchDestination, Colors.red)),
                     SizedBox(
                       height: 5,
@@ -118,11 +114,11 @@ class DispatchListWidget extends StatelessWidget {
                         _buildBottomInfo(
                             Icons.phone,
                             dispatch.dispatchRecieverPhone,
-                            Constant.primaryColorDark),
+                            Constants.primaryColorDark),
                         _buildBottomInfo(
                             FontAwesomeIcons.clock,
                             timeago.format(dispatch.dispatchDate),
-                            Constant.primaryColorDark)
+                            Constants.primaryColorDark)
                       ],
                     ),
                   ],

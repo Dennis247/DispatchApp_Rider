@@ -1,6 +1,5 @@
-import 'package:dispatch_app_rider/ui/widgets/appInputWidget.dart';
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
+import 'package:dispatch_app_rider/src/lib_export.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -8,7 +7,7 @@ class UpdatePassowrd extends StatelessWidget {
   static final String routeName = "update-password";
   @override
   Widget build(BuildContext context) {
-    final appSize = Constant.getAppSize(context);
+    final appSize = GlobalWidgets.getAppSize(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -41,7 +40,7 @@ class UpdatePassowrd extends StatelessWidget {
               Icon(
                 FontAwesomeIcons.lock,
                 size: 150,
-                color: Constant.primaryColorDark,
+                color: Constants.primaryColorDark,
               ),
               SizedBox(
                 height: appSize.height * 0.03,

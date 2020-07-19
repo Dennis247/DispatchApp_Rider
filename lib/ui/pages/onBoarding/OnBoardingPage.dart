@@ -1,10 +1,7 @@
-import 'package:dispatch_app_rider/provider/authProvider.dart';
+import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'package:dispatch_app_rider/ui/pages/auth/loginPage.dart';
-import 'package:dispatch_app_rider/ui/widgets/appTextWidget.dart';
-import 'package:dispatch_app_rider/utils/appStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:provider/provider.dart';
 
 class OnBoardingPage extends StatefulWidget {
   static final String routeName = "onboarding-page";

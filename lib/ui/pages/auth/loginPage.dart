@@ -1,15 +1,6 @@
-import 'package:dispatch_app_rider/provider/authProvider.dart';
-import 'package:dispatch_app_rider/provider/dispatchProvider.dart';
-import 'package:dispatch_app_rider/provider/notificatiomProvider.dart';
 import 'package:dispatch_app_rider/ui/pages/auth/signUpPage.dart';
 import 'package:dispatch_app_rider/ui/pages/home/homePage.dart';
-import 'package:dispatch_app_rider/ui/widgets/appButtonWidget.dart';
-import 'package:dispatch_app_rider/ui/widgets/appInputWidget.dart';
-import 'package:dispatch_app_rider/ui/widgets/appTextWidget.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:dispatch_app_rider/src/lib_export.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,16 +24,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _tryAutoLogin();
     super.initState();
-  }
-
-  void _tryAutoLogin() async {
-    bool canAutoLogin =
-        await Provider.of<AUthProvider>(context, listen: false).tryAutoLogin();
-    if (canAutoLogin) {
-      Navigator.of(context).pushReplacementNamed(HomePage.routeName);
-    }
   }
 
   void _loginUser() async {
@@ -52,22 +34,22 @@ class _LoginPageState extends State<LoginPage> {
     _startLoading(true);
     try {
       final response = await Provider.of<AUthProvider>(context, listen: false)
-          .login(_emailController.text, _passwordController.text);
+          .loginRider(_emailController.text, _passwordController.text);
       if (response.isSUcessfull) {
         Navigator.of(context).pushReplacementNamed(HomePage.routeName);
       } else {
         _startLoading(false);
-        Constant.showFialureDialogue(response.responseMessage, context);
+        GlobalWidgets.showFialureDialogue(response.responseMessage, context);
       }
     } catch (e) {
       _startLoading(false);
-      Constant.showFialureDialogue(e.toString(), context);
+      GlobalWidgets.showFialureDialogue(e.toString(), context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final appSzie = Constant.getAppSize(context);
+    final appSzie = GlobalWidgets.getAppSize(context);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -97,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: false,
                     controller: _emailController,
                     validator: (value) {
-                      return Constant.stringValidator(value, "email");
+                      return Constants.stringValidator(value, "email");
                     },
                   ),
                 ),
@@ -110,14 +92,14 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: true,
                       controller: _passwordController,
                       validator: (value) {
-                        return Constant.stringValidator(value, "password");
+                        return Constants.stringValidator(value, "password");
                       },
                     )),
                 SizedBox(
                   height: appSzie.height * 0.05,
                 ),
                 _isLoading
-                    ? Constant.circularInidcator()
+                    ? GlobalWidgets.circularInidcator()
                     : AppButtonWudget(
                         buttonText: "Login", function: _loginUser),
                 SizedBox(

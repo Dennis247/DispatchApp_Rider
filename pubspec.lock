@@ -23,7 +23,7 @@ packages:
     source: hosted
     version: "2.4.1"
   awesome_dialog:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: awesome_dialog
       url: "https://pub.dartlang.org"
@@ -72,7 +72,7 @@ packages:
     source: hosted
     version: "0.1.3"
   curved_navigation_bar:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: curved_navigation_bar
       url: "https://pub.dartlang.org"
@@ -84,7 +84,7 @@ packages:
       path: "../dispatch_lib"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.0.3"
   dots_indicator:
     dependency: transitive
     description:
@@ -100,7 +100,7 @@ packages:
     source: hosted
     version: "7.3.0"
   firebase_auth:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firebase_auth
       url: "https://pub.dartlang.org"
@@ -142,14 +142,14 @@ packages:
     source: hosted
     version: "0.1.1+2"
   firebase_database:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firebase_database
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.6"
   firebase_messaging:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firebase_messaging
       url: "https://pub.dartlang.org"
@@ -175,7 +175,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_credit_card:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_credit_card
       url: "https://pub.dartlang.org"
@@ -189,7 +189,7 @@ packages:
     source: hosted
     version: "0.7.0"
   flutter_local_notifications:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
@@ -210,7 +210,7 @@ packages:
     source: hosted
     version: "1.0.8"
   flutter_polyline_points:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_polyline_points
       url: "https://pub.dartlang.org"
@@ -222,7 +222,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_typeahead:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_typeahead
       url: "https://pub.dartlang.org"
@@ -234,21 +234,21 @@ packages:
     source: sdk
     version: "0.0.0"
   font_awesome_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: font_awesome_flutter
       url: "https://pub.dartlang.org"
     source: hosted
     version: "8.8.1"
   google_fonts:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: google_fonts
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
   google_maps_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: google_maps_flutter
       url: "https://pub.dartlang.org"
@@ -283,7 +283,7 @@ packages:
     source: hosted
     version: "2.1.12"
   introduction_screen:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: introduction_screen
       url: "https://pub.dartlang.org"
@@ -374,14 +374,14 @@ packages:
     source: hosted
     version: "1.0.2"
   progress_indicators:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: progress_indicators
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.5"
   provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: provider
       url: "https://pub.dartlang.org"
@@ -423,14 +423,14 @@ packages:
     source: hosted
     version: "1.1.2"
   share:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: share
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.4+3"
   shared_preferences:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
@@ -526,12 +526,19 @@ packages:
     source: hosted
     version: "0.2.15"
   timeago:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: timeago
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.26"
+  tuple:
+    dependency: transitive
+    description:
+      name: tuple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   typed_data:
     dependency: transitive
     description:
@@ -540,7 +547,7 @@ packages:
     source: hosted
     version: "1.1.6"
   uuid:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: uuid
       url: "https://pub.dartlang.org"

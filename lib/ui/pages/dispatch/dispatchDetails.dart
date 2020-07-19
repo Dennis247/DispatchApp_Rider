@@ -1,10 +1,4 @@
-import 'package:dispatch_app_rider/provider/authProvider.dart';
-import 'package:dispatch_app_rider/provider/dispatchProvider.dart';
-import 'package:dispatch_app_rider/provider/notificatiomProvider.dart';
 import 'package:dispatch_app_rider/ui/pages/home/homePage.dart';
-import 'package:dispatch_app_rider/ui/widgets/appButtonWidget.dart';
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +9,9 @@ import 'package:dispatch_app_rider/src/lib_export.dart';
 
 class DispatchDetails extends StatefulWidget {
   final Dispatch dispatch;
-  const DispatchDetails({Key key, this.dispatch}) : super(key: key);
+  final bool isNotificationType;
+  const DispatchDetails({Key key, this.dispatch, this.isNotificationType})
+      : super(key: key);
 
   @override
   _DispatchDetailsState createState() => _DispatchDetailsState();
@@ -72,13 +68,13 @@ class _DispatchDetailsState extends State<DispatchDetails> {
             ? SizedBox(
                 width: 100,
                 child: RaisedButton.icon(
-                    color: Constant.primaryColorDark,
+                    color: Constants.primaryColorDark,
                     shape: StadiumBorder(),
                     onPressed: function,
                     icon: Icon(
                       iconData,
                       size: 16,
-                      color: Constant.primaryColorLight,
+                      color: Constants.primaryColorLight,
                     ),
                     label: Text(
                       iconTitle,
@@ -91,26 +87,91 @@ class _DispatchDetailsState extends State<DispatchDetails> {
   }
 
   _showCancelMapButton() {
-    if (widget.dispatch.dispatchStatus == Constant.dispatchCompletedStatus ||
-        widget.dispatch.dispatchStatus == Constant.dispatchCancelledStatus ||
-        widget.dispatch.dispatchStatus == Constant.dispatchPendingStatus)
+    if (widget.dispatch.dispatchStatus == Constants.dispatchCompletedStatus ||
+        widget.dispatch.dispatchStatus == Constants.dispatchCancelledStatus ||
+        widget.dispatch.dispatchStatus == Constants.dispatchPendingStatus)
       return false;
     return true;
   }
 
   _showCurrentLocation() {
-    if (widget.dispatch.dispatchStatus == Constant.dispatchCompletedStatus ||
-        widget.dispatch.dispatchStatus == Constant.dispatchCancelledStatus ||
-        widget.dispatch.dispatchStatus == Constant.dispatchPendingStatus)
+    if (widget.dispatch.dispatchStatus == Constants.dispatchCompletedStatus ||
+        widget.dispatch.dispatchStatus == Constants.dispatchCancelledStatus ||
+        widget.dispatch.dispatchStatus == Constants.dispatchPendingStatus)
       return false;
     return true;
+  }
+
+  _getDispatchAction(DispatchProvider dispatchProvider, Size appSzie) {
+    if (widget.dispatch.dispatchStatus == Constants.dispatchPendingStatus) {
+      return AppRectButtonWidget(
+        width: appSzie.width,
+        buttonText: "ACCEPT DISPATCH",
+        function: () async {
+          _startLoading(true);
+          //set dispatch status to active and set dispatatch to rider Id
+          final ResponseModel responseModel = await dispatchProvider
+              .assignDispatchToRider(widget.dispatch.id, loggedInRider.id);
+          if (!responseModel.isSUcessfull) {
+            GlobalWidgets.showFialureDialogue(
+                responseModel.responseMessage, context);
+            return;
+          } else {
+            Provider.of<NotificationProvider>(context, listen: false)
+                .displayNotification("Dispatch Accepted",
+                    "Dispatch Delivery for ${widget.dispatch.dispatchReciever}\n(${widget.dispatch.dispatchRecieverPhone})\naccepted by ${loggedInRider.fullName}");
+            //send local notification to deliver dispatch
+            //send user the notification that rider si coming for pick up
+            Provider.of<NotificationProvider>(context, listen: false)
+                .createPickUpNotification(widget.dispatch);
+          }
+          _startLoading(false);
+          //goto dashboard
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => HomePage()),
+              (Route<dynamic> route) => false);
+        },
+      );
+    } else if (widget.dispatch.dispatchStatus ==
+        Constants.dispatchActiveStatus) {
+      return AppRectButtonWidget(
+        width: appSzie.width,
+        buttonText: "COMPLETE DISPATCH",
+        function: () async {
+          _startLoading(true);
+          //update dispatch Status as completed
+
+          final ResponseModel responseModel =
+              await dispatchProvider.updateDispatchStatus(
+                  widget.dispatch.id, Constants.dispatchCompletedStatus);
+          if (!responseModel.isSUcessfull) {
+            GlobalWidgets.showFialureDialogue(
+                responseModel.responseMessage, context);
+            return;
+          } else {
+            Provider.of<NotificationProvider>(context, listen: false)
+                .displayNotification("Dispatch Completed",
+                    "Dispatch Completed for ${widget.dispatch.dispatchReciever}");
+
+            // create completed dispatch Notification
+            Provider.of<NotificationProvider>(context, listen: false)
+                .createCompletedNotification(widget.dispatch);
+          }
+          _startLoading(false);
+          //goto dashboard
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => HomePage()),
+              (Route<dynamic> route) => false);
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final dispatchProvider =
         Provider.of<DispatchProvider>(context, listen: false);
-    final appSzie = Constant.getAppSize(context);
+    final appSzie = GlobalWidgets.getAppSize(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -146,7 +207,7 @@ class _DispatchDetailsState extends State<DispatchDetails> {
                     "Total Distance", widget.dispatch.estimatedDistance),
                 Divider(),
                 _isLoading
-                    ? Constant.circularInidcator()
+                    ? GlobalWidgets.circularInidcator()
                     : _buildRowDetails2(
                         "Delivery Status",
                         widget.dispatch.dispatchStatus,
@@ -157,20 +218,20 @@ class _DispatchDetailsState extends State<DispatchDetails> {
                                 context,
                                 listen: false)
                             .updateDispatchStatus(widget.dispatch.id,
-                                Constant.dispatchCancelledStatus);
+                                Constants.dispatchCancelledStatus);
                         if (response.isSUcessfull == true) {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => DispatchStatus(
                                         dispatchMessage:
-                                            Constant.cancellDispatchMessage,
+                                            Constants.cancellDispatchMessage,
                                         imageUrl: "assets/images/premiun.png",
                                         isDispatchProcessing: false,
                                       )),
                               (Route<dynamic> route) => false);
                         } else {
                           _startLoading(false);
-                          Constant.showFialureDialogue(
+                          GlobalWidgets.showFialureDialogue(
                               response.responseMessage, context);
                         }
                       }),
@@ -197,11 +258,11 @@ class _DispatchDetailsState extends State<DispatchDetails> {
                 Divider(),
                 _buildRowDetails("Reciever PhoneNumber",
                     widget.dispatch.dispatchRecieverPhone),
+                Divider(),
+                _buildRowDetails(
+                    "Package Description", widget.dispatch.dispatchDescription),
                 SizedBox(
                   height: appSzie.height * 0.03,
-                ),
-                SizedBox(
-                  height: appSzie.height * 0.02,
                 ),
               ],
             ),
@@ -211,40 +272,11 @@ class _DispatchDetailsState extends State<DispatchDetails> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          height: 50,
-          alignment: Alignment.center,
-          child: _isLoading
-              ? Constant.circularInidcator()
-              : AppRectButtonWidget(
-                  width: appSzie.width,
-                  buttonText: "ACCEPT DISPATCH",
-                  function: () async {
-                    _startLoading(true);
-                    //set dispatch status to active and set dispatatch to rider Id
-                    final ResponseModel responseModel =
-                        await dispatchProvider.assignDispatchToRider(
-                            widget.dispatch.id, loggedInRider.id);
-                    if (!responseModel.isSUcessfull) {
-                      Constant.showFialureDialogue(
-                          responseModel.responseMessage, context);
-                      return;
-                    } else {
-                      Provider.of<NotificationProvider>(context, listen: false)
-                          .displayNotification("Dispatch Accepted",
-                              "Dispatch Delivery for ${widget.dispatch.dispatchReciever}\n(${widget.dispatch.dispatchRecieverPhone})\naccepted by ${loggedInRider.fullName}");
-                      //send local notification to deliver dispatch
-                      //send user the notification that rider si coming for pick up
-                      Provider.of<NotificationProvider>(context, listen: false)
-                          .createPickUpDetail(widget.dispatch);
-                    }
-                    _startLoading(false);
-                    //goto dashboard
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                        (Route<dynamic> route) => false);
-                  },
-                ),
-        ),
+            height: 50,
+            alignment: Alignment.center,
+            child: _isLoading
+                ? GlobalWidgets.circularInidcator()
+                : _getDispatchAction(dispatchProvider, appSzie)),
       ),
     );
   }

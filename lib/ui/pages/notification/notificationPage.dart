@@ -1,9 +1,7 @@
-import 'package:dispatch_app_rider/provider/notificatiomProvider.dart';
+import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'package:dispatch_app_rider/ui/widgets/notificationWidget.dart';
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
+
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 //import 'package:timeago/timeago.dart' as timeago;
@@ -31,11 +29,11 @@ class NotificationPage extends StatelessWidget {
             }),
       ),
       body: StreamBuilder(
-          stream: notificationRef.orderByChild('notificationDate').onValue,
+          stream: notificationRef.orderByChild("notificationDate").onValue,
           builder: (context, AsyncSnapshot<Event> event) {
             if (event.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Constant.circularInidcator(),
+                child: GlobalWidgets.circularInidcator(),
               );
             } else {
               if (event.hasError) {
@@ -50,8 +48,8 @@ class NotificationPage extends StatelessWidget {
                 final dispatchNotifications = notificationProvider
                     .getStreamNotificationhList(dataSnapshot);
                 //send notifications not sent
-                notificationProvider
-                    .checkSendPendingNotification(dispatchNotifications);
+                // notificationProvider
+                //     .checkSendPendingNotification(dispatchNotifications);
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),

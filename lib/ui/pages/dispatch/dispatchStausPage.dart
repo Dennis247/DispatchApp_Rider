@@ -1,8 +1,5 @@
+import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'package:dispatch_app_rider/ui/pages/home/homePage.dart';
-import 'package:dispatch_app_rider/ui/widgets/appButtonWidget.dart';
-import 'package:dispatch_app_rider/ui/widgets/appTextWidget.dart';
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class DispatchStatus extends StatelessWidget {
@@ -15,7 +12,7 @@ class DispatchStatus extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final appSzie = Constant.getAppSize(context);
+    final appSzie = GlobalWidgets.getAppSize(context);
     return SafeArea(
       child: Container(
         child: Scaffold(

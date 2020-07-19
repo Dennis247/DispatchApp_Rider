@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'package:dispatch_app_rider/provider/googleMpaProvider.dart';
+
 import 'package:dispatch_app_rider/ui/widgets/appDrawer.dart';
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -101,7 +100,7 @@ class _DispatchLocationState extends State<DispatchLocation> {
     polylineCoordinates.clear();
     _polylines.clear();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        Constant.apiKey,
+        Constants.apiKey,
         PointLatLng(_startPlaceDetail.lat, _startPlaceDetail.lng),
         PointLatLng(_endPlaceDetail.lat, _endPlaceDetail.lng),
         travelMode: TravelMode.driving,
@@ -114,7 +113,7 @@ class _DispatchLocationState extends State<DispatchLocation> {
     setState(() {
       Polyline polyline = Polyline(
           polylineId: PolylineId('poly'),
-          color: Constant.primaryColorDark,
+          color: Constants.primaryColorDark,
           width: 4,
           points: polylineCoordinates);
       _polylines.add(polyline);
@@ -179,7 +178,7 @@ class _DispatchLocationState extends State<DispatchLocation> {
 
   @override
   Widget build(BuildContext context) {
-    final appSize = Constant.getAppSize(context);
+    final appSize = GlobalWidgets.getAppSize(context);
     final googleMapProvider =
         Provider.of<GoogleMapProvider>(context, listen: false);
     return SafeArea(

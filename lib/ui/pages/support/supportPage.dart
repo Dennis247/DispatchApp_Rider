@@ -1,5 +1,4 @@
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
+import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -11,7 +10,7 @@ class SupportPage extends StatelessWidget {
       children: <Widget>[
         Icon(
           iconData,
-          color: Constant.primaryColorDark,
+          color: Constants.primaryColorDark,
         ),
         SizedBox(
           width: 20,
@@ -56,7 +55,7 @@ class SupportPage extends StatelessWidget {
               Center(
                 child: Icon(
                   Icons.headset,
-                  color: Constant.primaryColorDark,
+                  color: Constants.primaryColorDark,
                   size: 150,
                 ),
               ),

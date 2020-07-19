@@ -1,9 +1,5 @@
-import 'package:dispatch_app_rider/provider/authProvider.dart';
-import 'package:dispatch_app_rider/provider/dispatchProvider.dart';
 import 'package:dispatch_app_rider/ui/pages/dispatch/dispatchListPage.dart';
 import 'package:dispatch_app_rider/ui/widgets/appDrawer.dart';
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +51,7 @@ class HomePage extends StatelessWidget {
           builder: (context, AsyncSnapshot<Event> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Constant.circularInidcator(),
+                child: GlobalWidgets.circularInidcator(),
               );
             } else {
               if (snapshot.hasError) {
@@ -71,16 +67,16 @@ class HomePage extends StatelessWidget {
                 List<Dispatch> loadedDispatch = dispatchProvider
                     .getStreamDIspatchList(snapshot.data.snapshot);
                 dispatchList = loadedDispatch;
-                _pendingDisaptchlist = dispatchProvider.getDispatchLIst(
-                    Constant.dispatchPendingStatus, dispatchList);
-                _activeDispatchList = dispatchProvider.getDispatchLIst(
-                    Constant.dispatchActiveStatus, dispatchList,
+                _pendingDisaptchlist = dispatchProvider.getRiderDispatchLIst(
+                    Constants.dispatchPendingStatus, dispatchList);
+                _activeDispatchList = dispatchProvider.getRiderDispatchLIst(
+                    Constants.dispatchActiveStatus, dispatchList,
                     riderId: loggedInRider.id);
-                _completedDispatchList = dispatchProvider.getDispatchLIst(
-                    Constant.dispatchCompletedStatus, dispatchList,
+                _completedDispatchList = dispatchProvider.getRiderDispatchLIst(
+                    Constants.dispatchCompletedStatus, dispatchList,
                     riderId: loggedInRider.id);
-                _cancelledDisaptchList = dispatchProvider.getDispatchLIst(
-                    Constant.dispatchCancelledStatus, dispatchList,
+                _cancelledDisaptchList = dispatchProvider.getRiderDispatchLIst(
+                    Constants.dispatchCancelledStatus, dispatchList,
                     riderId: loggedInRider.id);
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -94,7 +90,7 @@ class HomePage extends StatelessWidget {
                           context, () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => DispatchList(
-                                  dispatchType: Constant.dispatchPendingStatus,
+                                  dispatchType: Constants.dispatchPendingStatus,
                                   dispatchList: _pendingDisaptchlist,
                                 )));
                       }),
@@ -105,7 +101,7 @@ class HomePage extends StatelessWidget {
                           context, () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => DispatchList(
-                                  dispatchType: Constant.dispatchActiveStatus,
+                                  dispatchType: Constants.dispatchActiveStatus,
                                   dispatchList: _activeDispatchList,
                                 )));
                       }),
@@ -117,7 +113,7 @@ class HomePage extends StatelessWidget {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => DispatchList(
                                   dispatchType:
-                                      Constant.dispatchCompletedStatus,
+                                      Constants.dispatchCompletedStatus,
                                   dispatchList: _completedDispatchList,
                                 )));
                       }),
@@ -129,7 +125,7 @@ class HomePage extends StatelessWidget {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => DispatchList(
                                   dispatchType:
-                                      Constant.dispatchCancelledStatus,
+                                      Constants.dispatchCancelledStatus,
                                   dispatchList: _cancelledDisaptchList,
                                 )));
                       }),

@@ -1,8 +1,5 @@
-import 'package:dispatch_app_rider/model/notification.dart';
-import 'package:dispatch_app_rider/provider/dispatchProvider.dart';
 import 'package:dispatch_app_rider/ui/pages/dispatch/dispatchDetails.dart';
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
+import 'package:dispatch_app_rider/ui/pages/dispatch/pickUpDetailsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -26,24 +23,28 @@ class NotificationWidget extends StatelessWidget {
           children: <Widget>[
             Icon(
               FontAwesomeIcons.bell,
-              size: 22,
+              size: 20,
               color: color,
             ),
           ],
         ),
         SizedBox(
-          width: 10,
+          width: 20,
         ),
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('$point', style: AppTextStyles.smallgreyTextStyle),
+              Text('$point', style: AppTextStyles.smallDarkTextStyle),
+              SizedBox(
+                height: 3,
+              ),
               Text(
                 title,
                 style: AppTextStyles.appTextStyle,
                 softWrap: false,
                 overflow: TextOverflow.ellipsis,
+                maxLines: 2,
               ),
             ],
           ),
@@ -71,22 +72,64 @@ class NotificationWidget extends StatelessWidget {
     );
   }
 
+  _navigateToNotificationDetails(
+      DispatchNotification dispatchNotification, BuildContext context) async {
+    if (dispatchNotification.notificationType ==
+        Constants.pickUpDispatchNotification) {
+      // go to pickUp Details Page with all required data
+      var detailsResponse = await Provider.of<AUthProvider>(context,
+              listen: false)
+          .getPickUpDetails(
+              dispatchNotification.riderId, dispatchNotification.dispatchId);
+      if (!detailsResponse.item1.isSUcessfull) {
+        GlobalWidgets.showFialureDialogue(
+            detailsResponse.item1.responseMessage, context);
+      } else {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => PickUpDetailsPage(
+                  dispatch: detailsResponse.item3,
+                  rider: detailsResponse.item2,
+                )));
+      }
+    } else {
+      // go to dispatch Details Page using id
+      var dispatchReponse =
+          await Provider.of<DispatchProvider>(context, listen: false)
+              .getDispatch(dispatchNotification.dispatchId);
+      if (!dispatchReponse.item1.isSUcessfull) {
+        GlobalWidgets.showFialureDialogue(
+            dispatchReponse.item1.responseMessage, context);
+      } else {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => DispatchDetails(
+                  dispatch: dispatchReponse.item2,
+                  isNotificationType: true,
+                )));
+      }
+    }
+  }
+
+  Color _getDispatchTypeColor(String notificationType) {
+    if (notificationType == Constants.pickUpDispatchNotification) {
+      return Colors.deepPurple;
+    } else if (notificationType == Constants.completedDispatchNotification) {
+      return Colors.green;
+    } else if (notificationType == Constants.pendingDispatchNotification) {
+      return Colors.red;
+    }
+    return Colors.black;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final dispatch = dispatchList
-        .firstWhere((ds) => ds.id == dispatchNotification.dispatchId);
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return DispatchDetails(
-            dispatch: dispatch,
-          );
-        }));
+        _navigateToNotificationDetails(dispatchNotification, context);
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 5),
         child: Card(
-          shadowColor: Constant.primaryColorDark,
+          shadowColor: Constants.primaryColorDark,
           elevation: 2,
           child: Container(
             child: Column(
@@ -97,11 +140,12 @@ class NotificationWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(left: 10.0, top: 20.0),
+                      padding: const EdgeInsets.only(left: 20.0, top: 20.0),
                       child: _buildRideInfo(
                           dispatchNotification.notificationType,
-                          dispatchNotification.pickUp,
-                          Colors.red),
+                          dispatchNotification.message,
+                          _getDispatchTypeColor(
+                              dispatchNotification.notificationType)),
                     ),
                     SizedBox(
                       height: 5,
@@ -121,12 +165,12 @@ class NotificationWidget extends StatelessWidget {
                         _buildBottomInfo(
                             Icons.phone,
                             dispatchNotification.recipientPhone,
-                            Constant.primaryColorDark),
+                            Constants.primaryColorDark),
                         _buildBottomInfo(
                             FontAwesomeIcons.clock,
                             timeago
                                 .format(dispatchNotification.notificationDate),
-                            Constant.primaryColorDark)
+                            Constants.primaryColorDark)
                       ],
                     ),
                   ],
@@ -134,7 +178,7 @@ class NotificationWidget extends StatelessWidget {
               ],
             ),
             margin: EdgeInsets.only(left: 5, right: 5),
-            height: 125,
+            height: 150,
           ),
         ),
       ),

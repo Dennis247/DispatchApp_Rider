@@ -1,7 +1,4 @@
-import 'package:dispatch_app_rider/provider/dispatchProvider.dart';
-import 'package:dispatch_app_rider/ui/widgets/appButtonWidget.dart';
-import 'package:dispatch_app_rider/utils/appStyles.dart';
-import 'package:dispatch_app_rider/utils/constants.dart';
+import 'package:dispatch_app_rider/src/lib_export.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmDispatch extends StatelessWidget {
@@ -26,7 +23,7 @@ class ConfirmDispatch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appSzie = Constant.getAppSize(context);
+    final appSzie = GlobalWidgets.getAppSize(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -53,10 +50,10 @@ class ConfirmDispatch extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   _buildConfrimRowItem(
-                      Constant.pickUp, Constant.dispatchPickIpAddress),
+                      Constants.pickUp, Constants.dispatchPickIpAddress),
                   Divider(),
-                  _buildConfrimRowItem(Constant.deliveryAddress,
-                      Constant.dispatchDestinationAddress),
+                  _buildConfrimRowItem(Constants.deliveryAddress,
+                      Constants.dispatchDestinationAddress),
                   Divider(),
                   _buildConfrimRowItem(
                       "Dispatch Type", currentDispatch.dispatchType),
